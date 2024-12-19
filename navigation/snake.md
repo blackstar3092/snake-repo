@@ -1,144 +1,220 @@
 ---
 layout: base
-title: Snake
-permalink: /snake/
+title: Snake2
+permalink: /snake2/
 ---
 
 <style>
-    body {
-        background-color: #121212;
-        color: #FFFFFF;
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
+/* General Body Styling */
+body {
+    background: radial-gradient(circle, #000020, #000030, #000040);
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+header {
+    font-size: 20px;
+    color: #FFD700; /* Gold color for score */
+}
+
+/* Canvas Styling */
+canvas {
+    margin: 20px auto;
+    border: 8px solid #000000;
+    border-radius: 8px;
+    background: repeating-radial-gradient(
+        circle at center,
+        #000010 0,
+        #000030 2%,
+        #000010 4%
+    );
+    display: none;
+}
+
+canvas:focus {
+    outline: none;
+}
+
+/* Menu and Settings Styling */
+#menu, #gameover, #setting {
+    display: none;
+}
+
+#menu p, #gameover p, #setting p {
+    font-size: 18px;
+}
+
+#menu a, #gameover a, #setting a {
+    font-size: 24px;
+    color: #FFD700; /* Gold color */
+    text-decoration: none;
+    background-color: #333333;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 10px 0;
+}
+
+#menu a:hover, #gameover a:hover, #setting a:hover {
+    background-color: #FFD700;
+    color: #000000;
+    cursor: pointer;
+}
+
+#setting label {
+    font-size: 16px;
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #444444;
+    color: #FFFFFF;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#setting input:checked + label {
+    background-color: #FFD700;
+    color: #000000;
+}
+
+    body{
+    }
+    .wrap{
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    .wrap {
-        margin: 0 auto;
-        max-width: 400px;
-    }
-
-    canvas {
+    canvas{
         display: none;
-        border: 10px solid #FFFFFF;
-        border-radius: 10px;
-        background-color: #333;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        border-style: solid;
+        border-width: 10px;
+        border-color: #FFFFFF;
     }
-
-    canvas:focus {
+    canvas:focus{
         outline: none;
     }
 
     /* All screens style */
-    #gameover p, #setting p, #menu p {
-        font-size: 18px;
-        margin: 10px 0;
+    #gameover p, #setting p, #menu p{
+        font-size: 20px;
     }
 
-    #gameover a, #setting a, #menu a {
-        font-size: 22px;
+    #gameover a, #setting a, #menu a{
+        font-size: 30px;
         display: block;
-        margin: 10px auto;
-        width: fit-content;
-        padding: 10px 20px;
-        border: 2px solid #FFFFFF;
-        border-radius: 5px;
-        text-align: center;
-        text-decoration: none;
-        color: #FFFFFF;
-        transition: all 0.3s ease;
     }
 
-    #gameover a:hover, #setting a:hover, #menu a:hover {
-        background-color: #FFFFFF;
-        color: #121212;
+    #gameover a:hover, #setting a:hover, #menu a:hover{
         cursor: pointer;
     }
 
-    #menu {
+    #gameover a:hover::before, #setting a:hover::before, #menu a:hover::before{
+        content: ">";
+        margin-right: 10px;
+    }
+
+    #menu{
         display: block;
-        text-align: center;
-        padding: 20px;
     }
 
-    #gameover {
-        display: none;
-        text-align: center;
-        padding: 20px;
-    }
-
-    #setting {
-        display: none;
-        text-align: center;
-        padding: 20px;
-    }
-
-    #setting input {
+    #gameover{
         display: none;
     }
 
-    #setting label {
-        display: inline-block;
-        margin: 5px 10px;
-        padding: 5px 10px;
-        border: 2px solid #FFFFFF;
-        border-radius: 5px;
+    #setting{
+        display: none;
+    }
+
+    #setting input{
+        display:none;
+    }
+
+    #setting label{
         cursor: pointer;
-        transition: all 0.3s ease;
     }
 
-    #setting input:checked + label {
-        background-color: #FFFFFF;
-        color: #121212;
+    #setting input:checked + label{
+        background-color: #FFF;
+        color: #000;
     }
 </style>
 
-<h2 style="text-align:center; margin: 20px 0;">Snake Game</h2>
+<script>
+    // Draw stars on the canvas background
+const drawStars = () => {
+    for (let i = 0; i < 100; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const size = Math.random() * 2;
+        const opacity = Math.random();
+
+        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`; // White stars with varying opacity
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+};
+
+// Updated paintGalaxyBoard to include stars
+const paintGalaxyBoard = () => {
+    const size = BLOCK * 2; // Size of each square in the checkered pattern
+    for (let x = 0; x < canvas.width; x += size) {
+        for (let y = 0; y < canvas.height; y += size) {
+            ctx.fillStyle = (x / size + y / size) % 2 === 0 ? "#000033" : "#001144";
+            ctx.fillRect(x, y, size, size);
+        }
+    }
+    drawStars(); // Add stars over the checkered background
+};
+<script>
+<h2>Snake</h2>
 <div class="container">
-    <header class="pb-3 mb-4 border-bottom text-center">
+    <header class="pb-3 mb-4 border-bottom border-primary text-dark">
         <p class="fs-4">Score: <span id="score_value">0</span></p>
     </header>
-    <div class="wrap">
+    <div class="container bg-secondary" style="text-align:center;">
         <!-- Main Menu -->
-        <div id="menu" class="text-light">
-            <p>Welcome to Snake! Press <span style="background-color: #FFFFFF; color: #121212; padding: 2px 5px; border-radius: 3px;">Space</span> to begin.</p>
-            <a id="new_game">Start New Game</a>
-            <a id="setting_menu">Settings</a>
+        <div id="menu" class="py-4 text-light">
+            <p>Welcome to Snake, press <span style="background-color: #FFFFFF; color: #000000">space</span> to begin</p>
+            <a id="new_game" class="link-alert">new game</a>
+            <a id="setting_menu" class="link-alert">settings</a>
         </div>
-
         <!-- Game Over -->
-        <div id="gameover" class="text-light">
-            <p>Game Over! Press <span style="background-color: #FFFFFF; color: #121212; padding: 2px 5px; border-radius: 3px;">Space</span> to try again.</p>
-            <a id="new_game1">Start New Game</a>
-            <a id="setting_menu1">Settings</a>
+        <div id="gameover" class="py-4 text-light">
+            <p>Game Over, press <span style="background-color: #FFFFFF; color: #000000">space</span> to try again</p>
+            <a id="new_game1" class="link-alert">new game</a>
+            <a id="setting_menu1" class="link-alert">settings</a>
         </div>
-
         <!-- Play Screen -->
-        <canvas id="snake" width="320" height="320" tabindex="1"></canvas>
-
+        <canvas id="snake" class="wrap" width="320" height="320" tabindex="1"></canvas>
         <!-- Settings Screen -->
-        <div id="setting" class="text-light">
-            <p>Settings. Press <span style="background-color: #FFFFFF; color: #121212; padding: 2px 5px; border-radius: 3px;">Space</span> to return to the game.</p>
-            <a id="new_game2">Start New Game</a>
-
-            <div style="margin-top: 20px;">
-                <p>Speed:</p>
-                <input id="speed1" type="radio" name="speed" value="120" checked />
+        <div id="setting" class="py-4 text-light">
+            <p>Settings Screen, press <span style="background-color: #FFFFFF; color: #000000">space</span> to go back to playing</p>
+            <a id="new_game2" class="link-alert">new game</a>
+            <br>
+            <p>Speed:
+                <input id="speed1" type="radio" name="speed" value="120" checked/>
                 <label for="speed1">Slow</label>
-                <input id="speed2" type="radio" name="speed" value="75" />
+                <input id="speed2" type="radio" name="speed" value="75"/>
                 <label for="speed2">Normal</label>
-                <input id="speed3" type="radio" name="speed" value="35" />
+                <input id="speed3" type="radio" name="speed" value="35"/>
                 <label for="speed3">Fast</label>
-            </div>
-
-            <div style="margin-top: 20px;">
-                <p>Wall:</p>
-                <input id="wallon" type="radio" name="wall" value="1" checked />
+            </p>
+            <p>Wall:
+                <input id="wallon" type="radio" name="wall" value="1" checked/>
                 <label for="wallon">On</label>
-                <input id="walloff" type="radio" name="wall" value="0" />
+                <input id="walloff" type="radio" name="wall" value="0"/>
                 <label for="walloff">Off</label>
-            </div>
+            </p>
         </div>
     </div>
 </div>
