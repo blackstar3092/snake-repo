@@ -1,7 +1,7 @@
 ---
 layout: base
 title: Snake
-permalink: /snake/
+permalink: /snake-risha/
 ---
 
 <style>
@@ -24,7 +24,7 @@ permalink: /snake/
 
   /* The canvas itself */
   #gameCanvas {
-    border: 3px solid #cfffe3; /* Same color as snake body */
+    border: 1px solid #000;
     display: block;
     filter: none;
   }
@@ -68,19 +68,10 @@ permalink: /snake/
   button:disabled {
     cursor: not-allowed;
   }
-    
-  .high-score {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 16px;
-    color: #aaa;
-  }
-
   
 </style>
 
-   <h1> Snake Game</h1> <div class="high-score">Highest Score: 0</div>
+  <h1> Snake Game</h1>
   <div class="controls-container">
     <div class="score">Score: 0</div>
   </div>
@@ -108,7 +99,7 @@ permalink: /snake/
       Mode:
       <select id="modeToggle">
         <option value="regular">Regular</option>
-        <option value="frenzy">Frenzy</option>
+        <option value="challenge">Challenge</option>
       </select>
     </label>
       <label>
@@ -134,7 +125,6 @@ permalink: /snake/
     const startButton = document.getElementById('startButton');
     const backgroundSelect = document.getElementById('backgroundSelect');
     const modeToggle = document.getElementById('modeToggle');
-    const highScoreDisplay = document.querySelector('.high-score');
 
     const gridSize = 20;
     const tileCount = canvas.width / gridSize;
@@ -148,7 +138,6 @@ permalink: /snake/
     let gameLoop = null;
     let backgroundImage = new Image();
     let mode = 'regular'; // Regular mode by default
-    let highScore = 0;
 
 
     const backgrounds = {
@@ -179,7 +168,7 @@ permalink: /snake/
     /// }
 
 function drawSnake() {
-  ctx.fillStyle = '#0d9144'; // Snake body color
+  ctx.fillStyle = '#cfffe3'; // Snake body color
 
   // Function to draw a square with rounded corners
   function drawRoundedSquare(x, y, radius) {
@@ -297,7 +286,7 @@ function drawSnake() {
 
 function drawFood() {
 
-if (mode === 'frenzy') {
+if (mode === 'challenge') {
     if (food.type === 'apple') {
         // Draw the apple's body (red)
         ctx.fillStyle = '#ff4d4d'; // Red color for the apple
@@ -413,7 +402,7 @@ function placeFood() {
    } while (snake.some(segment => segment.x === newFoodPosition.x && segment.y === newFoodPosition.y));
 
    // Random food type selection with bias for poison
-   if (mode === 'frenzy') {
+   if (mode === 'challenge') {
      const foodTypes = ['apple', 'apple', 'pizza']; 
      const randomFoodType = foodTypes[Math.floor(Math.random() * foodTypes.length)];
      food = { ...newFoodPosition, type: randomFoodType };
@@ -443,14 +432,6 @@ function placeFood() {
       alert(`Game over! Your final score is ${score}.`);
       restartButton.disabled = false;
       startButton.style.display = 'block';
-
-      if (score > highScore) {
-    highScore = score;
-
-    setTimeout(() => {
-      highScoreDisplay.textContent = `Highest Score: ${highScore}`;
-    }, 0);
-    }
     }
 
     function updateSettings() {
