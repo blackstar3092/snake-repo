@@ -68,7 +68,42 @@ permalink: /snake/
   button:disabled {
     cursor: not-allowed;
   }
-    
+  /* Retro blue style for buttons */
+button {
+  background-color: #1E90FF; /* Dodger Blue */
+  border: 2px solid #4682B4; /* Steel Blue */
+  color: #FFFFFF; /* White text */
+  font-family: 'Press Start 2P', cursive; /* Pixelated retro font */
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3); /* Retro shadow effect */
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #00BFFF; /* Deep Sky Blue */
+  border-color: #00FFFF; /* Aqua border on hover */
+  box-shadow: 0 0 15px #00BFFF; /* Glow effect */
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+button:active {
+  background-color: #4682B4; /* Steel Blue for pressed effect */
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5); /* Subtle pressed shadow */
+  transform: scale(0.95); /* Pressed-down effect */
+}
+
+/* Optional: Disabled button styling */
+button:disabled {
+  background-color: #7F9FAF; /* Muted blue for disabled */
+  color: #CCCCCC; /* Muted text */
+  border-color: #5A738E; /* Muted border */
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
   .high-score {
     position: absolute;
     top: 10px;
@@ -76,9 +111,138 @@ permalink: /snake/
     font-size: 16px;
     color: #aaa;
   }
+/* Popup container styling */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black; /* Black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
-  
+/* Popup content box styling */
+.popup .content {
+  background-color: black; /* Retro black background */
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0px 4px 20px rgba(0, 255, 0, 0.7), 0px 0px 10px rgba(0, 255, 0, 0.5); /* Green glow and underlay */
+  font-family: 'Press Start 2P', sans-serif; /* Retro pixel font */
+  color: #00FF00; /* Neon green text */
+  text-transform: uppercase; /* Capitalized retro text */
+  position: relative;
+}
+
+/* List items styling */
+.popup .content ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0;
+}
+
+.popup .content ul li {
+  margin: 10px 0;
+  color: #00FF00; /* Neon green for list items */
+  font-size: 14px;
+}
+
+/* Close button default styling */
+.popup .close-button {
+  background-color: #00FF00; /* Neon green background */
+  color: black; /* Black text for retro feel */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-family: 'Press Start 2P', sans-serif; /* Retro font for button */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition for effects */
+}
+
+/* Close button active styling */
+.popup .close-button:active {
+  background-color: black; /* Turn background black */
+  color: #00FF00; /* Neon green text */
+}
+
+/* Close button hover styling */
+.popup .close-button:hover {
+  background-color: #00CC00; /* Slightly darker green on hover */
+}
+/* Retro blue style for dropdown menus */
+select {
+  background-color: #1E90FF; /* Dodger Blue */
+  border: 2px solid #4682B4; /* Steel Blue */
+  color: #FFFFFF; /* White text */
+  font-family: 'Press Start 2P', cursive; /* Pixelated retro font */
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Retro shadow effect */
+}
+
+select:focus {
+  outline: none;
+  border-color: #00BFFF; /* Deep Sky Blue */
+  box-shadow: 0 0 10px #00BFFF; /* Glow effect */
+}
+
+/* Retro blue style for the score */
+#score {
+  color: #00FFFF; /* Aqua */
+  font-family: 'Press Start 2P', cursive; /* Pixelated retro font */
+  font-size: 20px;
+  background: linear-gradient(to right, #1E90FF, #4682B4); /* Gradient background */
+  padding: 10px 20px;
+  border: 3px solid #4682B4; /* Steel Blue border */
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 3px 3px 10px rgba(0, 0, 255, 0.4); /* Retro glow effect */
+}
+
+/* Add retro styling to the dropdown container */
+.dropdown-container {
+  margin: 20px;
+  padding: 10px;
+  background: #000080; /* Navy Blue background */
+  border: 3px solid #4682B4;
+  border-radius: 10px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 139, 0.5); /* Dark blue shadow */
+}
 </style>
+<audio id="game-music" src="game-music.mp3" loop></audio>
+
+<div id="rules-popup" class="popup">
+  <div class="content">
+    <h1>Snake Game Rules</h1>
+    <p>Welcome to Snake! Here are the basic rules:</p>
+    <ul>
+      <li>Use the arrow keys (Up, Down, Left, Right) to control the snake's movement.</li>
+      <li>Eat the food (apple or pizza) to grow and score points.</li>
+      <li>Avoid hitting the walls (if enabled) or your own body.</li>
+      <li>The game ends when you hit a wall, your own body, or run out of time.</li>
+      <li>Higher difficulty modes (Frenzy) introduce additional challenges.</li>
+      <li>Use the settings to adjust walls, speed, and background.</li>
+    </ul>
+    <button class="close-button" onclick="closePopup()">Close</button>
+  </div>
+</div>
+<script>
+  // Function to close the popup
+  function closePopup() {
+    document.getElementById("rules-popup").style.display = "none";
+  }
+  // Automatically show the popup when the page loads
+  window.onload = function () {
+    document.getElementById("rules-popup").style.display = "flex";
+  };
+</script>
 
    <h1> Snake Game</h1> <div class="high-score">Highest Score: 0</div>
   <div class="controls-container">
@@ -502,5 +666,36 @@ function placeFood() {
 
 
     window.addEventListener('keydown', changeDirection);
+</script>
 
+<audio id="game-music" src="game-music.mp3" loop></audio>
+<div class="music-controls">
+    <button id="play-music-button">Play Music</button>
+    <button id="pause-music-button">Pause Music</button>
+</div>
+<button id="start-game-button">Start Game</button>
+
+<script>
+const gameMusic = document.getElementById('game-music');
+
+// Start the game and play music
+startButton.addEventListener('click', () => {
+  gameMusic.play();
+  gameMusic.volume = 0.5; // Set default volume
+  gameMusic.loop = true; // Ensure looping
+  startGame(); // Start game logic
+});
+
+// Pause the game and stop music
+restartButton.addEventListener('click', () => {
+  gameMusic.pause();
+  gameMusic.currentTime = 0; // Reset to start
+  startGame(); // Restart game logic
+});
+
+// Volume control
+const volumeControl = document.getElementById('volumeControl');
+volumeControl.addEventListener('input', (event) => {
+  gameMusic.volume = event.target.value;
+});
 </script>
